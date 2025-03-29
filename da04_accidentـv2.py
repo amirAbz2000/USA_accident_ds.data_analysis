@@ -96,7 +96,6 @@ df1.info()
 
 """# فهمیدن بازه اعدادی هر ستون و تصمیم گیری برای تغییر تایپ آن ها"""
 
-# استخراج و خلاصه‌سازی ستون‌های موردنظر
 df_selected = df[["Severity", "Temperature(F)", "Wind_Chill(F)", "Humidity(%)",
                   "Pressure(in)", "Visibility(mi)", "Wind_Speed(mph)",
                   "Precipitation(in)"]]
@@ -154,10 +153,8 @@ plt.grid(True)
 plt.tight_layout()
 plt.show()
 
-# محاسبه میانگین رطوبت در هر سطح از شدت تصادف
 mean_humidity = df2.groupby('Severity')['Humidity(%)'].mean()
 mean_humidity= mean_humidity.to_pandas()
-# رسم نمودار bar خیلی سبک
 mean_humidity.plot(kind='bar', figsize=(6,4))
 plt.title('Mean Humidity per Severity')
 plt.xlabel('Severity')
@@ -166,11 +163,9 @@ plt.grid(True)
 plt.tight_layout()
 plt.show()
 
-# محاسبه میانگین میزان دید برای هر سطح شدت تصادف
 mean_visibility = df2.groupby('Severity')['Visibility(mi)'].mean()
 mean_visibility = mean_visibility.to_pandas()
 
-# رسم نمودار bar
 mean_visibility.plot(kind='bar', figsize=(6,4))
 plt.title('Mean Visibility per Severity')
 plt.xlabel('Severity')
@@ -179,11 +174,9 @@ plt.grid(True)
 plt.tight_layout()
 plt.show()
 
-# محاسبه میانگین فشار هوا برای هر سطح شدت تصادف
 mean_pressure = df2.groupby('Severity')['Pressure(in)'].mean()
 mean_pressure = mean_pressure.to_pandas()
 
-# رسم نمودار bar
 mean_pressure.plot(kind='bar', figsize=(6,4))
 plt.title('Mean Pressure per Severity')
 plt.xlabel('Severity')
@@ -192,11 +185,9 @@ plt.grid(True)
 plt.tight_layout()
 plt.show()
 
-# محاسبه میانگین سرعت باد برای هر شدت تصادف
 mean_wind_speed = df2.groupby('Severity')['Wind_Speed(mph)'].mean()
 mean_wind_speed = mean_wind_speed.to_pandas()
 
-# رسم نمودار bar
 mean_wind_speed.plot(kind='bar', figsize=(6,4))
 plt.title('Mean Wind Speed per Severity')
 plt.xlabel('Severity')
@@ -205,14 +196,11 @@ plt.grid(True)
 plt.tight_layout()
 plt.show()
 
-# تبدیل فقط ستون‌های عددی به پانداس
 numeric_cols = ['Severity', 'Temperature(F)', 'Humidity(%)',
                 'Pressure(in)', 'Visibility(mi)', 'Wind_Speed(mph)']
 
-# فقط همین بخش از دیتافریم رو تبدیل کن تا رم فشار نیاد
 df_corr = df2[numeric_cols].to_pandas()
 
-# محاسبه همبستگی و رسم heatmap
 plt.figure(figsize=(8,6))
 sns.heatmap(df_corr.corr(), annot=True, cmap='coolwarm', fmt='.2f', square=True)
 plt.title('Correlation Heatmap (Numerical Features)')
@@ -222,16 +210,12 @@ plt.show()
 numeric_cols = ['Temperature(F)', 'Humidity(%)', 'Pressure(in)',
                 'Visibility(mi)', 'Wind_Speed(mph)']
 
-# تبدیل فقط همونا به pandas
 df_numeric = df2[['Severity'] + numeric_cols].to_pandas()
 
-# محاسبه همبستگی فقط با Severity
 correlation_with_severity = df_numeric.corr()['Severity'].drop('Severity')
 
-# مرتب کردن از بیشترین به کمترین
 correlation_sorted = correlation_with_severity.sort_values(ascending=False)
 
-# رسم barplot
 plt.figure(figsize=(8,4))
 sns.barplot(x=correlation_sorted.values, y=correlation_sorted.index, palette='coolwarm')
 plt.title('Correlation of Features with Severity')
@@ -240,15 +224,12 @@ plt.tight_layout()
 plt.grid(True)
 plt.show()
 
-# انتخاب ستون‌های عددی و تبدیل به pandas
 numeric_cols = ['Severity', 'Temperature(F)', 'Humidity(%)',
                 'Pressure(in)', 'Visibility(mi)', 'Wind_Speed(mph)']
 df_corr = df2[numeric_cols].to_pandas()
 
-# محاسبه همبستگی
 corr_matrix = df_corr.corr()
 
-# رسم Heatmap با مقیاس کامل
 plt.figure(figsize=(8,6))
 sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', fmt='.2f',
             vmin=-1, vmax=1, square=True)
